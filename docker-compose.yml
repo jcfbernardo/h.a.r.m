@@ -1,17 +1,18 @@
 version: '3.8'
 
 services:
-  postgres-db:
-    image: postgres:15
-    container_name: harm_postgres_db
+  mysql-db:
+    image: mysql:8.0
+    container_name: harm_mysql_db
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: harm_db
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: harm_user
+      MYSQL_PASSWORD: harm_password
+      MYSQL_DATABASE: harm_db
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  postgres_data:
+  mysql_data:
