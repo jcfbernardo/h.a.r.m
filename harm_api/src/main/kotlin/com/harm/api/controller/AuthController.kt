@@ -21,11 +21,12 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(
     val userService: UserService,
     val authenticationManager: AuthenticationManager,
-    val jwtUtils: JwtUtils
+    val jwtUtils: JwtUtils,
 ) {
-
     @PostMapping("/register")
-    fun registerUser(@RequestBody registerRequestDTO: RegisterRequestDTO): ResponseEntity<String> {
+    fun registerUser(
+        @RequestBody registerRequestDTO: RegisterRequestDTO,
+    ): ResponseEntity<String> {
         return try {
             userService.register(registerRequestDTO)
             ResponseEntity.ok("User successfully registered.")
@@ -35,25 +36,29 @@ class AuthController(
     }
 
     @PostMapping("/login")
-    fun loginUser(@RequestBody loginRequestDTO: LoginRequestDTO): ResponseEntity<*> {
+    fun loginUser(
+        @RequestBody loginRequestDTO: LoginRequestDTO,
+    ): ResponseEntity<*> {
         try {
-            val authentication = authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(loginRequestDTO.email, loginRequestDTO.password)
-            )
+            val authentication =
+                authenticationManager.authenticate(
+                    UsernamePasswordAuthenticationToken(loginRequestDTO.email, loginRequestDTO.password),
+                )
 
             val userDetails = authentication.principal as UserDetails
 
             val token = jwtUtils.generateToken(userDetails.username)
 
-            val user = userService.findByEmail(userDetails.username)
-                ?: throw IllegalStateException("User not found.")
+            val user =
+                userService.findByEmail(userDetails.username)
+                    ?: throw IllegalStateException("User not found.")
 
             return ResponseEntity.ok(
                 JwtResponseDTO(
                     token = token,
                     email = user.email,
                     username = user.username,
-                )
+                ),
             )
         } catch (e: AuthenticationException) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email or password invalid.")
