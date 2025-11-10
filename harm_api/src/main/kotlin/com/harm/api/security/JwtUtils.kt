@@ -1,3 +1,5 @@
+package com.harm.api.security
+
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import jakarta.annotation.PostConstruct
@@ -9,10 +11,10 @@ import javax.crypto.SecretKey
 
 @Component
 class JwtUtils(
-    @Value("\${jwt.secret}") private var jwtSecret: String,
-    @Value("\${jwt.expiration}") private val jwtExpirationMs: Int,
-    private var key: SecretKey
-) {
+    @Value("\${harm.api.jwtSecret}") private val jwtSecret: String,
+    @Value("\${harm.api.jwtExpirationMs}") private val jwtExpirationMs: Int,
+    ) {
+    private lateinit var key: SecretKey
     @PostConstruct
     fun init() {
         this .key = Keys.hmacShaKeyFor(jwtSecret.toByteArray(StandardCharsets.UTF_8))

@@ -1,3 +1,5 @@
+package com.harm.api.dto
+
 data class RegisterRequestDTO(
     val username: String,
     val email: String,
@@ -12,5 +14,5 @@ data class LoginRequestDTO(
 data class JwtResponseDTO(
     val username: String,
     val email: String,
-    val token: String
+    val token: String?
 )
