@@ -13,10 +13,10 @@ data class Chord(
     val title: String,
 
     @Column(columnDefinition = "TEXT")
-    val rawCifraText: String,
+    val rawProgressionText: String,
 
     @Column(columnDefinition = "json")
-    val processedCifraJson: String,
+    val processedProgressionJson: String,
 
     @Column(nullable = false)
     val styleName: String,
